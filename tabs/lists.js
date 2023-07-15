@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Animated, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Animated, Button, Pressable } from 'react-native';
 import LIST from './listData';
 import FRIDGE from "./fridgeData";
 
@@ -10,12 +10,12 @@ const renderItem = ({item})=>(
 const renderListItem = ({item})=>(
   <View>
     <Item text={item.text}/>
-    <Button onclick={pushToFridge(item.text)}></Button>
+    <Pressable onPress={pushToFridge(item.text)} title="Got it" style={styles.got}><Text>Got it!</Text></Pressable>
   </View>
 );
 
 const pushToFridge = (item) => {
-  
+
 }
 
 const Item = ({text}) => {
@@ -99,6 +99,12 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     lineHeight: 54, /* 150% */
     letterSpacing: 0.2,
+  },
+  got: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: 75,
+    backgroundColor: 'orange'
   }
 })
 
