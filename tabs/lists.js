@@ -1,99 +1,75 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Animated, Button, Pressable } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Animated, Button, Pressable, ScrollView } from 'react-native';
 import LIST from './listData';
-import FRIDGE from "./fridgeData";
 
-const renderItem = ({item})=>(
-  <Item text={item.text}/>
+const renderItem = ({ item }) => (
+  <Item text={item.text} />
 );
 
-const renderListItem = ({item})=>(
-  <View>
-    <Item text={item.text}/>
-    <Pressable onPress={pushToFridge(item.text)} title="Got it" style={styles.got}><Text>Got it!</Text></Pressable>
+const renderListItem = ({ item }) => (
+  <View style={styles.listItem} id={item.id}>
+    <Item text={item.text} />
+    <Pressable onPress={pushToFridge(item.inFridge)} style={styles.got}><Text>Got it!</Text></Pressable>
   </View>
 );
 
-const pushToFridge = (item) => {
-
+function pushToFridge(item) {
+  console.log(item)
+  item = true
 }
 
-const Item = ({text}) => {
-  return(
+const Item = ({ text }) => {
+  return (
     <View style={styles.item}>
-    <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </View>
   );
 }
 
-// const ExpandableView = (file, { expanded = false }) => {
-//   const [height] = useState(new Animated.Value(0));
-
-//   useEffect(() => {
-//     Animated.timing(height, {
-//       toValue: !expanded ? 200 : 0,
-//       duration: 150,
-//       useNativeDriver: false
-//     }).start();
-//   }, [expanded, height]);
-
-//   // console.log('rerendered');
-//   return (
-//     <Animated.View
-//       style={{ height, backgroundColor: "lightgray" }}
-//     >
-//       <Text>ayuda</Text>
-//       <FlatList
-//           data={file}
-//           renderItem={renderItem}
-//           keyExtractor={(item) => item.id}
-//         />
-//     </Animated.View>
-//   );
-// };
-
 const ListsScreen = () => {
   return (
     <View>
-      <Text style={styles.label}>Have</Text>
-      <FlatList
-          data={FRIDGE}
+      {/* {LIST.map(x => (
+        x.inFridge ? <View>
+          <Text style={styles.label}>Have</Text>
+          <FlatList
+            data={x.inFridge}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View> :
+          <View>
+            <Text style={styles.label}>Need</Text>
+            <FlatList
+              data={x.inFridge}
+              renderItem={renderListItem}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+      ))} */}
+      <View>
+        <Text style={styles.label}>Have</Text>
+        <FlatList
+          data={LIST.filter(item => item.inFridge == true)}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
-      <Text style={styles.label}>Need</Text>
-      <FlatList
-          data={LIST}
+      </View>
+      <View>
+        <Text style={styles.label}>Need</Text>
+        <FlatList
+          data={LIST.filter(item => item.inFridge == false)}
           renderItem={renderListItem}
           keyExtractor={(item) => item.id}
         />
-      {/* <SectionList
-        sections={DATA}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ section: { data } }) => (
-          <>
-            <ExpandableView expanded={isExpanded}>
-              <Text>{data}</Text>
-            </ExpandableView>
-          </>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <TouchableOpacity style={styles.label}
-            onPress={() => {
-              setIsExpanded(!isExpanded);
-            }}
-          >
-            <Text style={styles.label}>{title}</Text>
-          </TouchableOpacity>
-        )}
-      /> */}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   label: {
-    color: '#3A00E5',
+    color: 'tomato',
     /* label large */
     fontSize: 36,
     fontWeight: 500,
@@ -101,10 +77,24 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
   got: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginVertical: 4,
+    marginHorizontal: 10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'orange',
+    width: 'auto',
+    fontSize: 16
+  },
+  listItem: {
     flex: 1,
-    justifyContent: 'flex-end',
-    width: 75,
-    backgroundColor: 'orange'
+    flexDirection: "row",
+    justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: 24,
+    marginLeft: 10,
   }
 })
 
